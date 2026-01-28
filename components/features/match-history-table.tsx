@@ -73,9 +73,10 @@ export function MatchHistoryTable({ matches, teamName }: MatchHistoryTableProps)
                   }}
                 >
                   <td className="py-2 px-3" style={{ color: 'var(--text-tertiary)' }}>
-                    {new Date(match.date).toLocaleDateString('en-US', {
-                      month: 'short',
-                      day: 'numeric',
+                    {new Date(match.date).toLocaleDateString('en-GB', {
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric',
                     })}
                   </td>
                   <td className="py-2 px-3" style={{ color: 'var(--text-primary)' }}>

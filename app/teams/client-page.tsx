@@ -5,6 +5,7 @@ import { FilteredMarket, TeamStats } from '@/types';
 import { fetchPremierLeagueEvents, filter45GoalLineMarkets } from '@/services/gamma-api';
 import { computeAllTeamStats } from '@/services/match-history';
 import { TeamStatsCard } from '@/components/features/team-stats-card';
+import { TeamHistoryModal } from '@/components/features/team-history-modal';
 import { GridView } from '@/components/ui/grid-view';
 
 type SortType = 'name' | 'over45' | 'matches';
@@ -13,7 +14,7 @@ export default function ClientPage() {
   const [teams, setTeams] = useState<TeamStats[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [expandedTeams, setExpandedTeams] = useState<Set<string>>(new Set());
+  const [selectedTeam, setSelectedTeam] = useState<TeamStats | null>(null);
   const [sortType, setSortType] = useState<SortType>('name');
 
   useEffect(() => {
@@ -50,14 +51,8 @@ export default function ClientPage() {
     fetchData();
   }, []);
 
-  const toggleExpand = (teamName: string) => {
-    const newExpanded = new Set(expandedTeams);
-    if (newExpanded.has(teamName)) {
-      newExpanded.delete(teamName);
-    } else {
-      newExpanded.add(teamName);
-    }
-    setExpandedTeams(newExpanded);
+  const handleTeamClick = (team: TeamStats) => {
+    setSelectedTeam(team);
   };
 
   // Sort teams based on selected sort type
@@ -187,11 +182,17 @@ export default function ClientPage() {
           <TeamStatsCard
             key={team.teamName}
             team={team}
-            isExpanded={expandedTeams.has(team.teamName)}
-            onToggle={() => toggleExpand(team.teamName)}
+            onClick={() => handleTeamClick(team)}
           />
         ))}
       </GridView>
+
+      {/* Team History Modal */}
+      <TeamHistoryModal
+        team={selectedTeam}
+        isOpen={!!selectedTeam}
+        onClose={() => setSelectedTeam(null)}
+      />
     </div>
   );
 }
