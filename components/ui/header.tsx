@@ -1,6 +1,13 @@
+'use client';
+
 import React from 'react';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 
 export function Header() {
+  const pathname = usePathname();
+  const isActive = (path: string) => pathname === path;
+
   return (
     <header className="w-full border-b" style={{ borderColor: 'var(--border-default)', background: 'var(--background-secondary)' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -12,13 +19,38 @@ export function Header() {
               </h1>
             </div>
             <nav className="hidden md:ml-6 md:flex md:space-x-8">
-              <a
-                href="#"
-                className="border-b-2 px-1 pt-1 text-sm font-medium transition-colors duration-150"
-                style={{ borderColor: 'var(--brand-primary)', color: 'var(--brand-primary)' }}
+              <Link
+                href="/"
+                className="px-1 pt-1 text-sm font-medium border-b-2 transition-colors duration-150"
+                style={{
+                  borderColor: isActive('/') ? 'var(--brand-primary)' : 'transparent',
+                  color: isActive('/') ? 'var(--brand-primary)' : 'var(--text-secondary)'
+                }}
+                onMouseEnter={(e) => {
+                  if (!isActive('/')) e.currentTarget.style.color = 'var(--text-primary)';
+                }}
+                onMouseLeave={(e) => {
+                  if (!isActive('/')) e.currentTarget.style.color = 'var(--text-secondary)';
+                }}
               >
                 Markets
-              </a>
+              </Link>
+              <Link
+                href="/teams"
+                className="px-1 pt-1 text-sm font-medium border-b-2 transition-colors duration-150"
+                style={{
+                  borderColor: isActive('/teams') ? 'var(--brand-primary)' : 'transparent',
+                  color: isActive('/teams') ? 'var(--brand-primary)' : 'var(--text-secondary)'
+                }}
+                onMouseEnter={(e) => {
+                  if (!isActive('/teams')) e.currentTarget.style.color = 'var(--text-primary)';
+                }}
+                onMouseLeave={(e) => {
+                  if (!isActive('/teams')) e.currentTarget.style.color = 'var(--text-secondary)';
+                }}
+              >
+                Team Stats
+              </Link>
               <a
                 href="#"
                 className="px-1 pt-1 text-sm font-medium border-b-2 border-transparent transition-colors duration-150"

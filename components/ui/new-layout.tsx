@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 import { Header } from './header';
 
 interface LayoutProps {
@@ -9,6 +11,9 @@ interface LayoutProps {
 
 export function NewLayout({ children }: LayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const pathname = usePathname();
+
+  const isActive = (path: string) => pathname === path;
 
   return (
     <div className="flex min-h-screen flex-col" style={{ background: 'var(--background-primary)' }}>
@@ -21,13 +26,50 @@ export function NewLayout({ children }: LayoutProps) {
         >
           <div className="p-4">
             <nav className="space-y-1">
-              <a
-                href="#"
+              <Link
+                href="/"
                 className="flex items-center px-3 py-2 text-sm font-medium rounded-md transition-all duration-150"
-                style={{ background: 'var(--background-tertiary)', color: 'var(--brand-primary)' }}
+                style={{
+                  background: isActive('/') ? 'var(--background-tertiary)' : 'transparent',
+                  color: isActive('/') ? 'var(--brand-primary)' : 'var(--text-secondary)'
+                }}
+                onMouseEnter={(e) => {
+                  if (!isActive('/')) {
+                    e.currentTarget.style.background = 'var(--background-hover)';
+                    e.currentTarget.style.color = 'var(--text-primary)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isActive('/')) {
+                    e.currentTarget.style.background = 'transparent';
+                    e.currentTarget.style.color = 'var(--text-secondary)';
+                  }
+                }}
               >
                 <span>Markets</span>
-              </a>
+              </Link>
+              <Link
+                href="/teams"
+                className="flex items-center px-3 py-2 text-sm font-medium rounded-md transition-all duration-150"
+                style={{
+                  background: isActive('/teams') ? 'var(--background-tertiary)' : 'transparent',
+                  color: isActive('/teams') ? 'var(--brand-primary)' : 'var(--text-secondary)'
+                }}
+                onMouseEnter={(e) => {
+                  if (!isActive('/teams')) {
+                    e.currentTarget.style.background = 'var(--background-hover)';
+                    e.currentTarget.style.color = 'var(--text-primary)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isActive('/teams')) {
+                    e.currentTarget.style.background = 'transparent';
+                    e.currentTarget.style.color = 'var(--text-secondary)';
+                  }
+                }}
+              >
+                <span>Team Stats</span>
+              </Link>
               <a
                 href="#"
                 className="flex items-center px-3 py-2 text-sm font-medium rounded-md transition-all duration-150"
@@ -58,21 +100,6 @@ export function NewLayout({ children }: LayoutProps) {
               >
                 <span>Activity</span>
               </a>
-              <a
-                href="#"
-                className="flex items-center px-3 py-2 text-sm font-medium rounded-md transition-all duration-150"
-                style={{ color: 'var(--text-secondary)' }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'var(--background-hover)';
-                  e.currentTarget.style.color = 'var(--text-primary)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'transparent';
-                  e.currentTarget.style.color = 'var(--text-secondary)';
-                }}
-              >
-                <span>Settings</span>
-              </a>
             </nav>
           </div>
         </aside>
@@ -93,13 +120,28 @@ export function NewLayout({ children }: LayoutProps) {
           >
             <div className="p-4">
               <nav className="space-y-1">
-                <a
-                  href="#"
+                <Link
+                  href="/"
                   className="flex items-center px-3 py-2 text-sm font-medium rounded-md"
-                  style={{ background: 'var(--background-tertiary)', color: 'var(--brand-primary)' }}
+                  style={{
+                    background: isActive('/') ? 'var(--background-tertiary)' : 'transparent',
+                    color: isActive('/') ? 'var(--brand-primary)' : 'var(--text-secondary)'
+                  }}
+                  onClick={() => setSidebarOpen(false)}
                 >
                   <span>Markets</span>
-                </a>
+                </Link>
+                <Link
+                  href="/teams"
+                  className="flex items-center px-3 py-2 text-sm font-medium rounded-md"
+                  style={{
+                    background: isActive('/teams') ? 'var(--background-tertiary)' : 'transparent',
+                    color: isActive('/teams') ? 'var(--brand-primary)' : 'var(--text-secondary)'
+                  }}
+                  onClick={() => setSidebarOpen(false)}
+                >
+                  <span>Team Stats</span>
+                </Link>
                 <a
                   href="#"
                   className="flex items-center px-3 py-2 text-sm font-medium rounded-md"
@@ -113,13 +155,6 @@ export function NewLayout({ children }: LayoutProps) {
                   style={{ color: 'var(--text-secondary)' }}
                 >
                   <span>Activity</span>
-                </a>
-                <a
-                  href="#"
-                  className="flex items-center px-3 py-2 text-sm font-medium rounded-md"
-                  style={{ color: 'var(--text-secondary)' }}
-                >
-                  <span>Settings</span>
                 </a>
               </nav>
             </div>

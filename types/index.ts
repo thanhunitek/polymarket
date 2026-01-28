@@ -215,3 +215,27 @@ export interface ApiResponse<T> {
   error?: string;
   timestamp: number;
 }
+
+// Match History Types
+export interface MatchResult {
+  round: string;           // "Matchday 1"
+  date: string;            // "2024-08-16"
+  time: string;            // "20:00"
+  team1: string;           // "Manchester United FC"
+  team2: string;           // "Fulham FC"
+  score: {
+    ft: [number, number];  // Full-time score
+  };
+  totalGoals: number;      // Computed: ft[0] + ft[1]
+  isOver45: boolean;       // Computed: totalGoals > 4.5
+  season: string;          // "2024-25" or "2025-26"
+}
+
+export interface TeamStats {
+  teamName: string;
+  matchesPlayed: number;
+  over45Count: number;
+  over45Percentage: number;
+  last5Matches: MatchResult[];    // Most recent 5
+  allMatches: MatchResult[];      // All matches, newest first
+}
