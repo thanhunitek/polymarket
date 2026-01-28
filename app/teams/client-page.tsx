@@ -1,8 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { FilteredMarket, TeamStats } from '@/types';
-import { fetchPremierLeagueEvents, filter45GoalLineMarkets } from '@/services/gamma-api';
+import { TeamStats } from '@/types';
 import { computeAllTeamStats } from '@/services/match-history';
 import { TeamStatsCard } from '@/components/features/team-stats-card';
 import { TeamHistoryModal } from '@/components/features/team-history-modal';
@@ -25,17 +24,10 @@ export default function ClientPage() {
 
         console.log('[Teams] Starting data fetch...');
 
-        // Fetch current markets from Gamma API
-        console.log('[Teams] Fetching markets...');
-        const events = await fetchPremierLeagueEvents();
-        console.log('[Teams] Got events:', events.length);
-
-        const markets = filter45GoalLineMarkets(events);
-        console.log('[Teams] Filtered markets:', markets.length);
-
-        // Compute team stats
+        // Compute team stats from match history
+        // This will fetch all teams from 2025-26 season (or all seasons if 2025-26 not available)
         console.log('[Teams] Computing team stats...');
-        const teamStatsList = await computeAllTeamStats(markets);
+        const teamStatsList = await computeAllTeamStats([]);
         console.log('[Teams] Team stats computed:', teamStatsList.length);
 
         setTeams(teamStatsList);

@@ -148,14 +148,37 @@ export function extractUniqueTeams(markets: FilteredMarket[]): string[] {
 }
 
 /**
+ * Extracts unique team names from match history for a specific season
+ */
+export function extractTeamsFromMatches(matches: MatchResult[], season?: string): string[] {
+  const teamSet = new Set<string>();
+
+  for (const match of matches) {
+    // Filter by season if specified
+    if (season && match.season !== season) {
+      continue;
+    }
+
+    teamSet.add(match.team1);
+    teamSet.add(match.team2);
+  }
+
+  return Array.from(teamSet).sort();
+}
+
+/**
  * Computes stats for all teams from markets and match history
  */
 export async function computeAllTeamStats(markets: FilteredMarket[]): Promise<TeamStats[]> {
-  // Extract unique teams from markets
-  const teams = extractUniqueTeams(markets);
-
   // Fetch match history
   const matchHistory = await fetchMatchHistory();
+
+  // Extract unique teams from match history (prioritize 2025-26 season, fallback to all seasons)
+  const teamsFrom2025 = extractTeamsFromMatches(matchHistory, '2025-26');
+  const teamsFromAllSeasons = extractTeamsFromMatches(matchHistory);
+
+  // Use 2025-26 teams if available, otherwise use all teams
+  const teams = teamsFrom2025.length > 0 ? teamsFrom2025 : teamsFromAllSeasons;
 
   // Compute stats for each team
   const teamStatsList: TeamStats[] = [];
