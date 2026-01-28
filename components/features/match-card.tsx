@@ -13,92 +13,146 @@ interface MatchCardProps {
 }
 
 export function MatchCard({ market, onClick, isSelected, isLoading, onOpenEvent }: MatchCardProps) {
+  // Convert prices to percentages
+  const overPercentage = (market.currentOverPrice * 100).toFixed(0);
+  const underPercentage = (market.currentUnderPrice * 100).toFixed(0);
+  const askOverPercentage = market.bestAskOverPrice !== null && market.bestAskOverPrice !== undefined
+    ? (market.bestAskOverPrice * 100).toFixed(0)
+    : null;
+  const askUnderPercentage = market.bestAskUnderPrice !== null && market.bestAskUnderPrice !== undefined
+    ? (market.bestAskUnderPrice * 100).toFixed(0)
+    : null;
+
   return (
-    <div 
+    <div
       onClick={onClick}
-      className={`border rounded-xl p-5 cursor-pointer transition-all duration-200 hover:shadow-lg ${
-        isSelected 
-          ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 shadow-md' 
-          : 'border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600'
-      } bg-white dark:bg-gray-800`}
+      className={`
+        p-4 cursor-pointer rounded-lg border transition-all duration-150
+        ${isSelected
+          ? 'border-[var(--brand-primary)] shadow-[0_0_0_1px_var(--brand-primary)]'
+          : 'border-[var(--border-default)] hover:border-[var(--border-hover)]'
+        }
+      `}
+      style={{ background: 'var(--background-secondary)' }}
     >
-      <div className="flex justify-between items-start mb-3">
-        <h2 className="text-lg font-semibold text-black dark:text-white line-clamp-1">
+      {/* Event Header */}
+      <div className="flex justify-between items-start mb-4">
+        <h2 className="text-lg font-bold text-white line-clamp-2 flex-1 pr-3">
           {market.eventTitle}
         </h2>
-        <span className="text-xs text-zinc-500 dark:text-zinc-400">
+        <span className="text-xs font-medium whitespace-nowrap" style={{ color: 'var(--text-tertiary)' }}>
           {formatUTC7DateTime(market.gameStartTime)}
         </span>
       </div>
-      
-      <div className="grid grid-cols-2 gap-4 mb-4">
-        <div className="text-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
-          <p className="text-xs text-green-700 dark:text-green-300 font-medium">Over 4.5</p>
-          <p className="text-xl font-bold text-green-600 dark:text-green-400 mt-1">
-            {market.currentOverPrice.toFixed(2)}
+
+      {/* Outcome Boxes */}
+      <div className="grid grid-cols-2 gap-3 mb-4">
+        {/* Over */}
+        <div
+          className="p-3 rounded-lg border"
+          style={{
+            background: 'var(--background-tertiary)',
+            borderColor: 'var(--market-over)'
+          }}
+        >
+          <p className="text-xs font-medium mb-1" style={{ color: 'var(--text-secondary)' }}>
+            Over 4.5
           </p>
-          {market.bestAskOverPrice !== null && market.bestAskOverPrice !== undefined && (
-            <p className="text-xs text-green-600 dark:text-green-400 mt-1">
-              Ask: {market.bestAskOverPrice.toFixed(2)}
+          <p className="text-2xl font-bold tabular-nums" style={{ color: 'var(--market-over)' }}>
+            {overPercentage}%
+          </p>
+          {askOverPercentage !== null && (
+            <p className="text-xs mt-2 tabular-nums" style={{ color: 'var(--text-tertiary)' }}>
+              Ask: {askOverPercentage}%
             </p>
           )}
           {market.bestAskOverVolume !== null && market.bestAskOverVolume !== undefined && (
-            <p className="text-xs text-green-600 dark:text-green-400">
+            <p className="text-xs tabular-nums" style={{ color: 'var(--text-tertiary)' }}>
               Vol: {market.bestAskOverVolume.toFixed(0)}
             </p>
           )}
         </div>
-        <div className="text-center p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
-          <p className="text-xs text-red-700 dark:text-red-300 font-medium">Under 4.5</p>
-          <p className="text-xl font-bold text-red-600 dark:text-red-400 mt-1">
-            {market.currentUnderPrice.toFixed(2)}
+
+        {/* Under */}
+        <div
+          className="p-3 rounded-lg border"
+          style={{
+            background: 'var(--background-tertiary)',
+            borderColor: 'var(--market-under)'
+          }}
+        >
+          <p className="text-xs font-medium mb-1" style={{ color: 'var(--text-secondary)' }}>
+            Under 4.5
           </p>
-          {market.bestAskUnderPrice !== null && market.bestAskUnderPrice !== undefined && (
-            <p className="text-xs text-red-600 dark:text-red-400 mt-1">
-              Ask: {market.bestAskUnderPrice.toFixed(2)}
+          <p className="text-2xl font-bold tabular-nums" style={{ color: 'var(--market-under)' }}>
+            {underPercentage}%
+          </p>
+          {askUnderPercentage !== null && (
+            <p className="text-xs mt-2 tabular-nums" style={{ color: 'var(--text-tertiary)' }}>
+              Ask: {askUnderPercentage}%
             </p>
           )}
           {market.bestAskUnderVolume !== null && market.bestAskUnderVolume !== undefined && (
-            <p className="text-xs text-red-600 dark:text-red-400">
+            <p className="text-xs tabular-nums" style={{ color: 'var(--text-tertiary)' }}>
               Vol: {market.bestAskUnderVolume.toFixed(0)}
             </p>
           )}
         </div>
       </div>
-      
-      <p className="text-xs text-zinc-600 dark:text-zinc-400 line-clamp-2 mb-4">
+
+      {/* Market Question */}
+      <p className="text-xs line-clamp-2 mb-4" style={{ color: 'var(--text-secondary)' }}>
         {market.marketQuestion}
       </p>
-      
-      <div className="flex justify-between gap-2">
+
+      {/* Action Buttons */}
+      <div className="flex gap-2">
         <button
           onClick={(e) => {
-            e.stopPropagation(); // Prevent event bubbling to the card click
+            e.stopPropagation();
             onOpenEvent();
           }}
-          className="flex-1 text-sm bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg transition-colors duration-200 font-medium"
+          className="flex-1 text-sm px-3 py-2 rounded-lg font-medium transition-all duration-150"
+          style={{
+            background: 'var(--brand-primary)',
+            color: 'white'
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.background = 'var(--brand-hover)'}
+          onMouseLeave={(e) => e.currentTarget.style.background = 'var(--brand-primary)'}
         >
           View Event
         </button>
         <button
           onClick={(e) => {
-            e.stopPropagation(); // Prevent event bubbling to the card click
+            e.stopPropagation();
             onClick();
           }}
-          className="flex-1 text-sm bg-zinc-100 hover:bg-zinc-200 text-zinc-800 dark:bg-zinc-700 dark:hover:bg-zinc-600 dark:text-white px-3 py-2 rounded-lg transition-colors duration-200 font-medium"
+          className="flex-1 text-sm px-3 py-2 rounded-lg font-medium border transition-all duration-150"
+          style={{
+            background: 'transparent',
+            borderColor: 'var(--border-default)',
+            color: 'var(--text-secondary)'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = 'var(--background-hover)';
+            e.currentTarget.style.borderColor = 'var(--border-hover)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'transparent';
+            e.currentTarget.style.borderColor = 'var(--border-default)';
+          }}
         >
           View Details
         </button>
       </div>
-      
-      <div className="mt-3">
-        {isLoading && (
-          <div className="flex items-center justify-center">
-            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500"></div>
-            <span className="ml-2 text-xs text-zinc-500 dark:text-zinc-400">Loading...</span>
-          </div>
-        )}
-      </div>
+
+      {/* Loading State */}
+      {isLoading && (
+        <div className="flex items-center justify-center mt-3">
+          <div className="animate-spin rounded-full h-4 w-4 border-b-2" style={{ borderColor: 'var(--brand-primary)' }}></div>
+          <span className="ml-2 text-xs" style={{ color: 'var(--text-tertiary)' }}>Loading...</span>
+        </div>
+      )}
     </div>
   );
 }

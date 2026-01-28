@@ -11,23 +11,66 @@ export function NewLayout({ children }: LayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen flex-col bg-zinc-50 dark:bg-black">
+    <div className="flex min-h-screen flex-col" style={{ background: 'var(--background-primary)' }}>
       <Header />
       <div className="flex flex-1">
         {/* Sidebar - hidden on mobile, visible on larger screens */}
-        <aside className="hidden md:block w-64 bg-white dark:bg-gray-900 border-r border-zinc-200 dark:border-zinc-800">
+        <aside
+          className="hidden md:block w-64 border-r"
+          style={{ background: 'var(--background-secondary)', borderColor: 'var(--border-default)' }}
+        >
           <div className="p-4">
             <nav className="space-y-1">
-              <a href="#" className="flex items-center px-3 py-2 text-sm font-medium text-blue-600 bg-blue-50 dark:bg-blue-900/30 dark:text-blue-400 rounded-md">
+              <a
+                href="#"
+                className="flex items-center px-3 py-2 text-sm font-medium rounded-md transition-all duration-150"
+                style={{ background: 'var(--background-tertiary)', color: 'var(--brand-primary)' }}
+              >
                 <span>Markets</span>
               </a>
-              <a href="#" className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 rounded-md">
+              <a
+                href="#"
+                className="flex items-center px-3 py-2 text-sm font-medium rounded-md transition-all duration-150"
+                style={{ color: 'var(--text-secondary)' }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'var(--background-hover)';
+                  e.currentTarget.style.color = 'var(--text-primary)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'transparent';
+                  e.currentTarget.style.color = 'var(--text-secondary)';
+                }}
+              >
                 <span>Portfolio</span>
               </a>
-              <a href="#" className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 rounded-md">
+              <a
+                href="#"
+                className="flex items-center px-3 py-2 text-sm font-medium rounded-md transition-all duration-150"
+                style={{ color: 'var(--text-secondary)' }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'var(--background-hover)';
+                  e.currentTarget.style.color = 'var(--text-primary)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'transparent';
+                  e.currentTarget.style.color = 'var(--text-secondary)';
+                }}
+              >
                 <span>Activity</span>
               </a>
-              <a href="#" className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 rounded-md">
+              <a
+                href="#"
+                className="flex items-center px-3 py-2 text-sm font-medium rounded-md transition-all duration-150"
+                style={{ color: 'var(--text-secondary)' }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'var(--background-hover)';
+                  e.currentTarget.style.color = 'var(--text-primary)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'transparent';
+                  e.currentTarget.style.color = 'var(--text-secondary)';
+                }}
+              >
                 <span>Settings</span>
               </a>
             </nav>
@@ -36,27 +79,46 @@ export function NewLayout({ children }: LayoutProps) {
 
         {/* Mobile sidebar overlay */}
         {sidebarOpen && (
-          <div 
-            className="md:hidden fixed inset-0 z-20 bg-black bg-opacity-50"
+          <div
+            className="md:hidden fixed inset-0 z-20 bg-black bg-opacity-50 backdrop-blur-sm"
             onClick={() => setSidebarOpen(false)}
           ></div>
         )}
 
         {/* Mobile sidebar */}
         {sidebarOpen && (
-          <aside className="md:hidden fixed inset-y-0 left-0 z-30 w-64 bg-white dark:bg-gray-900 border-r border-zinc-200 dark:border-zinc-800">
+          <aside
+            className="md:hidden fixed inset-y-0 left-0 z-30 w-64 border-r"
+            style={{ background: 'var(--background-secondary)', borderColor: 'var(--border-default)' }}
+          >
             <div className="p-4">
               <nav className="space-y-1">
-                <a href="#" className="flex items-center px-3 py-2 text-sm font-medium text-blue-600 bg-blue-50 dark:bg-blue-900/30 dark:text-blue-400 rounded-md">
+                <a
+                  href="#"
+                  className="flex items-center px-3 py-2 text-sm font-medium rounded-md"
+                  style={{ background: 'var(--background-tertiary)', color: 'var(--brand-primary)' }}
+                >
                   <span>Markets</span>
                 </a>
-                <a href="#" className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 rounded-md">
+                <a
+                  href="#"
+                  className="flex items-center px-3 py-2 text-sm font-medium rounded-md"
+                  style={{ color: 'var(--text-secondary)' }}
+                >
                   <span>Portfolio</span>
                 </a>
-                <a href="#" className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 rounded-md">
+                <a
+                  href="#"
+                  className="flex items-center px-3 py-2 text-sm font-medium rounded-md"
+                  style={{ color: 'var(--text-secondary)' }}
+                >
                   <span>Activity</span>
                 </a>
-                <a href="#" className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 rounded-md">
+                <a
+                  href="#"
+                  className="flex items-center px-3 py-2 text-sm font-medium rounded-md"
+                  style={{ color: 'var(--text-secondary)' }}
+                >
                   <span>Settings</span>
                 </a>
               </nav>

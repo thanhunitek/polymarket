@@ -12,48 +12,94 @@ export function SortingControls({ onSortChange }: { onSortChange: (sort: 'date' 
 
   return (
     <div className="flex justify-end mb-6">
-      <div className="inline-flex rounded-lg shadow-sm bg-white dark:bg-gray-800 p-1" role="group">
+      <div className="inline-flex rounded-lg p-1" role="group" style={{ background: 'var(--background-secondary)' }}>
         <button
           type="button"
           onClick={() => handleSortChange('date')}
-          className={`px-4 py-2 text-sm font-medium rounded-md ${
-            sortType === 'date'
-              ? 'bg-blue-600 text-white shadow'
-              : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+          className={`px-4 py-2 text-sm font-medium rounded-md transition-all duration-150 ${
+            sortType === 'date' ? '' : ''
           }`}
+          style={
+            sortType === 'date'
+              ? { background: 'var(--brand-primary)', color: 'white' }
+              : { background: 'transparent', color: 'var(--text-secondary)' }
+          }
+          onMouseEnter={(e) => {
+            if (sortType !== 'date') {
+              e.currentTarget.style.background = 'var(--background-hover)';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (sortType !== 'date') {
+              e.currentTarget.style.background = 'transparent';
+            }
+          }}
         >
           Date
         </button>
         <button
           type="button"
           onClick={() => handleSortChange('over')}
-          className={`px-4 py-2 text-sm font-medium rounded-md ${
+          className={`px-4 py-2 text-sm font-medium rounded-md transition-all duration-150`}
+          style={
             sortType === 'over'
-              ? 'bg-blue-600 text-white shadow'
-              : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
-          }`}
+              ? { background: 'var(--brand-primary)', color: 'white' }
+              : { background: 'transparent', color: 'var(--text-secondary)' }
+          }
+          onMouseEnter={(e) => {
+            if (sortType !== 'over') {
+              e.currentTarget.style.background = 'var(--background-hover)';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (sortType !== 'over') {
+              e.currentTarget.style.background = 'transparent';
+            }
+          }}
         >
           Over Price
         </button>
         <button
           type="button"
           onClick={() => handleSortChange('under')}
-          className={`px-4 py-2 text-sm font-medium rounded-md ${
+          className={`px-4 py-2 text-sm font-medium rounded-md transition-all duration-150`}
+          style={
             sortType === 'under'
-              ? 'bg-blue-600 text-white shadow'
-              : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
-          }`}
+              ? { background: 'var(--brand-primary)', color: 'white' }
+              : { background: 'transparent', color: 'var(--text-secondary)' }
+          }
+          onMouseEnter={(e) => {
+            if (sortType !== 'under') {
+              e.currentTarget.style.background = 'var(--background-hover)';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (sortType !== 'under') {
+              e.currentTarget.style.background = 'transparent';
+            }
+          }}
         >
           Under Price
         </button>
         <button
           type="button"
           onClick={() => handleSortChange('bestAskUnder')}
-          className={`px-4 py-2 text-sm font-medium rounded-md ${
+          className={`px-4 py-2 text-sm font-medium rounded-md transition-all duration-150`}
+          style={
             sortType === 'bestAskUnder'
-              ? 'bg-blue-600 text-white shadow'
-              : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
-          }`}
+              ? { background: 'var(--brand-primary)', color: 'white' }
+              : { background: 'transparent', color: 'var(--text-secondary)' }
+          }
+          onMouseEnter={(e) => {
+            if (sortType !== 'bestAskUnder') {
+              e.currentTarget.style.background = 'var(--background-hover)';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (sortType !== 'bestAskUnder') {
+              e.currentTarget.style.background = 'transparent';
+            }
+          }}
         >
           Best Ask
         </button>

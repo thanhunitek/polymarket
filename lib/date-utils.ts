@@ -3,28 +3,13 @@
  */
 
 /**
- * Converts a UTC+0 date to UTC+7 (Vietnam time)
- * @param date - The date in UTC+0 (ISO string or Date object)
- * @returns Date object in UTC+7
+ * Converts a UTC date string or Date object to a Date object
+ * No manual timezone conversion needed - toLocaleString handles it
+ * @param date - The date in UTC (ISO string or Date object)
+ * @returns Date object
  */
 export function convertToUTC7(date: string | Date): Date {
-  const dateObj = new Date(date);
-  
-  // Get UTC+0 time
-  const utcHours = dateObj.getUTCHours();
-  const utcMinutes = dateObj.getUTCMinutes();
-  const utcSeconds = dateObj.getUTCSeconds();
-  const utcDate = dateObj.getUTCDate();
-  const utcMonth = dateObj.getUTCMonth();
-  const utcYear = dateObj.getUTCFullYear();
-  
-  // Convert to UTC+7 (add 7 hours)
-  // Note: JavaScript Date handles time zones automatically when using toLocaleString
-  // But for exact conversion, we'll create a new date with UTC+7 offset
-  const utc7Date = new Date(Date.UTC(utcYear, utcMonth, utcDate, utcHours, utcMinutes, utcSeconds));
-  utc7Date.setHours(utc7Date.getHours() + 7);
-  
-  return utc7Date;
+  return new Date(date);
 }
 
 /**
