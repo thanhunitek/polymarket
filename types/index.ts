@@ -228,7 +228,7 @@ export interface MatchResult {
   };
   totalGoals: number;      // Computed: ft[0] + ft[1]
   isOver45: boolean;       // Computed: totalGoals > 4.5
-  season: string;          // "2024-25" or "2025-26"
+  season: string;          // "2024-25", "2025-26", or "2026-27"
 }
 
 export interface TeamStats {

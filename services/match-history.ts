@@ -48,6 +48,12 @@ export async function fetchMatchHistory(): Promise<MatchResult[]> {
       allMatches.push(...matches2025);
     }
 
+    // Parse 2026-27 season
+    if (data['2026-27']) {
+      const matches2026 = parseSeasonMatches(data['2026-27'], '2026-27');
+      allMatches.push(...matches2026);
+    }
+
     return allMatches;
   } catch (error) {
     console.error('Error fetching match history:', error);

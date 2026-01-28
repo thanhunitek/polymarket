@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
-    const [response2024, response2025] = await Promise.all([
+    const [response2024, response2025, response2026] = await Promise.all([
       fetch('https://raw.githubusercontent.com/openfootball/football.json/master/2024-25/en.1.json', {
         method: 'GET',
         headers: {
@@ -15,20 +15,28 @@ export async function GET() {
           'Accept': 'application/json',
         },
       }),
+      fetch('https://raw.githubusercontent.com/openfootball/football.json/master/2026-27/en.1.json', {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+        },
+      }),
     ]);
 
-    // Handle 404 for 2025-26 season gracefully (might not exist yet)
+    // Handle 404 for future seasons gracefully (might not exist yet)
     const data2024 = response2024.ok ? await response2024.json() : null;
     const data2025 = response2025.ok ? await response2025.json() : null;
+    const data2026 = response2026.ok ? await response2026.json() : null;
 
-    if (!data2024 && !data2025) {
+    if (!data2024 && !data2025 && !data2026) {
       throw new Error('No season data available');
     }
 
-    // Return both seasons if available, otherwise just what we have
+    // Return all seasons if available, otherwise just what we have
     const combinedData = {
       '2024-25': data2024,
       '2025-26': data2025,
+      '2026-27': data2026,
     };
 
     return NextResponse.json(combinedData);
