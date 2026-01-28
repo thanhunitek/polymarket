@@ -19,10 +19,7 @@ interface RawMatch {
 
 interface RawSeasonData {
   name: string;
-  rounds: Array<{
-    name: string;
-    matches: RawMatch[];
-  }>;
+  matches: RawMatch[];
 }
 
 /**
@@ -64,31 +61,29 @@ export async function fetchMatchHistory(): Promise<MatchResult[]> {
 export function parseSeasonMatches(rawData: RawSeasonData, season: string): MatchResult[] {
   const matches: MatchResult[] = [];
 
-  if (!rawData || !rawData.rounds) {
+  if (!rawData || !rawData.matches) {
     return matches;
   }
 
-  for (const round of rawData.rounds) {
-    for (const match of round.matches) {
-      // Only include matches with final scores
-      if (match.score && match.score.ft) {
-        const totalGoals = match.score.ft[0] + match.score.ft[1];
-        const isOver45 = totalGoals > 4.5;
+  for (const match of rawData.matches) {
+    // Only include matches with final scores
+    if (match.score && match.score.ft) {
+      const totalGoals = match.score.ft[0] + match.score.ft[1];
+      const isOver45 = totalGoals > 4.5;
 
-        matches.push({
-          round: round.name,
-          date: match.date,
-          time: match.time || '00:00',
-          team1: match.team1,
-          team2: match.team2,
-          score: {
-            ft: match.score.ft,
-          },
-          totalGoals,
-          isOver45,
-          season,
-        });
-      }
+      matches.push({
+        round: match.round,
+        date: match.date,
+        time: match.time || '00:00',
+        team1: match.team1,
+        team2: match.team2,
+        score: {
+          ft: match.score.ft,
+        },
+        totalGoals,
+        isOver45,
+        season,
+      });
     }
   }
 

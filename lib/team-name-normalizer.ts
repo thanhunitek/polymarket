@@ -75,13 +75,24 @@ const OPENFOOTBALL_TO_DISPLAY: Record<string, string> = {
  * @returns OpenFootball formatted team name
  */
 export function normalizeToOpenFootball(gammaName: string): string {
+  // First check if there's a direct mapping
   const normalized = TEAM_NAME_MAP[gammaName];
   if (normalized) {
     return normalized;
   }
 
-  // If no direct mapping, try to match by checking if gammaName ends with FC
+  // If already in OpenFootball format (ends with FC), return as-is
   if (gammaName.endsWith(' FC')) {
+    return gammaName;
+  }
+
+  // If ends with other common suffixes, return as-is
+  if (gammaName.startsWith('AFC ') || gammaName.endsWith(' United')) {
+    // Check if it's a known club
+    const withFC = `${gammaName} FC`;
+    if (Object.values(TEAM_NAME_MAP).includes(withFC)) {
+      return withFC;
+    }
     return gammaName;
   }
 
@@ -108,6 +119,7 @@ export function normalizeToDisplay(openfootballName: string): string {
  * Extracts team names from event title
  * Handles formats like:
  * - "Liverpool vs Manchester City"
+ * - "Liverpool vs. Manchester City"
  * - "Man Utd @ Arsenal"
  * - "Chelsea v Brighton"
  *
@@ -115,8 +127,8 @@ export function normalizeToDisplay(openfootballName: string): string {
  * @returns Object with home and away team names (OpenFootball format)
  */
 export function extractTeamNamesFromTitle(eventTitle: string): { home: string; away: string } | null {
-  // Common separators: vs, v, @, -
-  const separators = [' vs ', ' v ', ' @ ', ' - '];
+  // Common separators: vs., vs, v, @, -
+  const separators = [' vs. ', ' vs ', ' v ', ' @ ', ' - '];
 
   for (const separator of separators) {
     if (eventTitle.includes(separator)) {

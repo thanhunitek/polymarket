@@ -22,18 +22,27 @@ export default function ClientPage() {
         setLoading(true);
         setError(null);
 
+        console.log('[Teams] Starting data fetch...');
+
         // Fetch current markets from Gamma API
+        console.log('[Teams] Fetching markets...');
         const events = await fetchPremierLeagueEvents();
+        console.log('[Teams] Got events:', events.length);
+
         const markets = filter45GoalLineMarkets(events);
+        console.log('[Teams] Filtered markets:', markets.length);
 
         // Compute team stats
+        console.log('[Teams] Computing team stats...');
         const teamStatsList = await computeAllTeamStats(markets);
+        console.log('[Teams] Team stats computed:', teamStatsList.length);
 
         setTeams(teamStatsList);
         setLoading(false);
       } catch (err) {
-        console.error('Error fetching team data:', err);
-        setError('Failed to load team data. Please try again later.');
+        console.error('[Teams] Error fetching team data:', err);
+        console.error('[Teams] Error stack:', err instanceof Error ? err.stack : 'No stack');
+        setError(`Failed to load team data: ${err instanceof Error ? err.message : 'Unknown error'}`);
         setLoading(false);
       }
     };
